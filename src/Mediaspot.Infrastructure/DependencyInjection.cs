@@ -13,9 +13,11 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, string databaseName)
     {
+        // Persistence
         services.AddDbContext<MediaspotDbContext>(o => o.UseInMemoryDatabase(databaseName));
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
         services.AddScoped<IAssetRepository, AssetRepository>();
         services.AddScoped<ITranscodeJobRepository, TranscodeJobRepository>();
         services.AddScoped<ITitleRepository, TitleRepository>();

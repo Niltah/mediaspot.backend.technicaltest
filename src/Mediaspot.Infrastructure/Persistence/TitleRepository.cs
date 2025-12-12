@@ -7,7 +7,7 @@ namespace Mediaspot.Infrastructure.Persistence;
 public sealed class TitleRepository(MediaspotDbContext db) : ITitleRepository
 {
     public ValueTask<Title?> GetAsync(Guid id, CancellationToken ct)
-        => db.Titles.FindAsync(id, ct);
+        => db.Titles.FindAsync([id], cancellationToken: ct);
 
     public Task<Title?> GetByNameAsync(string name, CancellationToken ct)
         => db.Titles.FirstOrDefaultAsync(a => a.Name == name, ct);

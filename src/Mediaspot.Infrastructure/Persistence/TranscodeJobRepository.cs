@@ -6,6 +6,9 @@ namespace Mediaspot.Infrastructure.Persistence;
 
 public sealed class TranscodeJobRepository(MediaspotDbContext db) : ITranscodeJobRepository
 {
+    public ValueTask<TranscodeJob?> GetAsync(Guid id, CancellationToken ct)
+        => db.TranscodeJobs.FindAsync([id], cancellationToken: ct);
+
     public async Task AddAsync(TranscodeJob job, CancellationToken ct) => await db.TranscodeJobs.AddAsync(job, ct);
 
     public Task<bool> HasActiveJobsAsync(Guid assetId, CancellationToken ct)

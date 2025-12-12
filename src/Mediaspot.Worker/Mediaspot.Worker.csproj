@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Mediaspot.Application\Mediaspot.Application.csproj" />
+    <ProjectReference Include="..\Mediaspot.Domain\Mediaspot.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
