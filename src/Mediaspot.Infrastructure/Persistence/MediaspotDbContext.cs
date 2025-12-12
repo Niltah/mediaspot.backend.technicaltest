@@ -1,5 +1,6 @@
 ﻿using Mediaspot.Domain.Assets;
 using Mediaspot.Domain.Assets.ValueObjects;
+using Mediaspot.Domain.Titles;
 using Mediaspot.Domain.Transcoding;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,7 @@ public sealed class MediaspotDbContext(DbContextOptions<MediaspotDbContext> opti
 {
     public DbSet<Asset> Assets => Set<Asset>();
     public DbSet<TranscodeJob> TranscodeJobs => Set<TranscodeJob>();
+    public DbSet<Title> Titles => Set<Title>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -54,6 +56,16 @@ public sealed class MediaspotDbContext(DbContextOptions<MediaspotDbContext> opti
             b.Property(j => j.Preset).IsRequired();
             b.Property(j => j.Status);
             b.HasIndex(j => new { j.AssetId, j.Status });
+        });
+
+        modelBuilder.Entity<Title>(b =>
+        {
+            b.HasKey(a => a.Id);
+
+            b.Property(a => a.Name).IsRequired();
+            b.Property(a => a.Description);
+            b.Property(a => a.ReleaseDate);
+            b.Property(a => a.Type);
         });
     }
 }
