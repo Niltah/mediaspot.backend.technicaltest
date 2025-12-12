@@ -3,6 +3,7 @@ using Mediaspot.Application.Assets.Commands.Create;
 using Mediaspot.Application.Common;
 using Mediaspot.Domain.Assets;
 using Mediaspot.Domain.Assets.ValueObjects;
+using Mediaspot.UnitTests.Utils;
 using Moq;
 using Shouldly;
 
@@ -21,8 +22,8 @@ public class CreateAssetHandlerTests
         repo.Setup(r => r.AddAsync(It.IsAny<Asset>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
         uow.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);
 
-        var handler = new CreateAssetHandler(repo.Object, validator.Object, uow.Object);
-        var cmd = new CreateAssetCommand("ext-unique", "title", "desc", "en");
+        var handler = new DummyCreateAssetHandler(repo.Object, validator.Object, uow.Object);
+        var cmd = new DummyCreateAssetCommand("ext-unique", "title", "desc", "en");
 
         var id = await handler.Handle(cmd, CancellationToken.None);
 
@@ -38,10 +39,10 @@ public class CreateAssetHandlerTests
         var validator = new Mock<IValidator<CreateAssetCommand>>();
         var uow = new Mock<IUnitOfWork>();
 
-        repo.Setup(r => r.GetByExternalIdAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Asset("ext-unique", new Metadata("t", null, null)));
+        repo.Setup(r => r.GetByExternalIdAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(new DummyAsset("ext-unique", new Metadata("t", null, null)));
 
-        var handler = new CreateAssetHandler(repo.Object, validator.Object, uow.Object);
-        var cmd = new CreateAssetCommand("ext-unique", "title", "desc", "en");
+        var handler = new DummyCreateAssetHandler(repo.Object, validator.Object, uow.Object);
+        var cmd = new DummyCreateAssetCommand("ext-unique", "title", "desc", "en");
 
         await Should.ThrowAsync<InvalidOperationException>(() => handler.Handle(cmd, CancellationToken.None));
     }

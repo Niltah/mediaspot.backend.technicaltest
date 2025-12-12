@@ -10,7 +10,7 @@ public sealed class CreateTitleHandler(ITitleRepository repo, IValidator<CreateT
 {
     public async Task<Guid> Handle(CreateTitleCommand request, CancellationToken ct)
     {
-        // Validatre parameter
+        // Validate parameter
         validator.ValidateAndThrow(request);
 
         // Enforce uniqueness of Name

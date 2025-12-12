@@ -2,6 +2,7 @@ using Mediaspot.Application.Assets.Commands.RegisterMediaFile;
 using Mediaspot.Application.Common;
 using Mediaspot.Domain.Assets;
 using Mediaspot.Domain.Assets.ValueObjects;
+using Mediaspot.UnitTests.Utils;
 using Moq;
 using Shouldly;
 
@@ -12,7 +13,7 @@ public class RegisterMediaFileHandlerTests
     [Fact]
     public async Task Handle_Should_Register_MediaFile_And_Save()
     {
-        var asset = new Asset("ext", new Metadata("t", null, null));
+        var asset = new DummyAsset("ext", new Metadata("t", null, null));
         var repo = new Mock<IAssetRepository>();
         var uow = new Mock<IUnitOfWork>();
         repo.Setup(r => r.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(asset);

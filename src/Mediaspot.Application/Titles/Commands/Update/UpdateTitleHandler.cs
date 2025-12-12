@@ -8,7 +8,7 @@ public sealed class UpdateTitleHandler(ITitleRepository repo, IValidator<UpdateT
 {
     public async Task Handle(UpdateTitleCommand request, CancellationToken ct)
     {
-        // Validatre parameter
+        // Validate parameter
         validator.ValidateAndThrow(request);
 
         var title = await repo.GetAsync(request.TitleId, ct) ?? throw new KeyNotFoundException("Title not found");
