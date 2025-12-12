@@ -1,15 +1,19 @@
-﻿using Mediaspot.Application.Common;
+﻿using FluentValidation;
+using Mediaspot.Application.Common;
 using Mediaspot.Domain.Assets;
 using Mediaspot.Domain.Assets.ValueObjects;
 using MediatR;
 
 namespace Mediaspot.Application.Assets.Commands.Create;
 
-public sealed class CreateAssetHandler(IAssetRepository repo, IUnitOfWork uow)
+public sealed class CreateAssetHandler(IAssetRepository repo, IValidator<CreateAssetCommand> validator, IUnitOfWork uow)
     : IRequestHandler<CreateAssetCommand, Guid>
 {
     public async Task<Guid> Handle(CreateAssetCommand request, CancellationToken ct)
     {
+        // Validatre parameter
+        validator.ValidateAndThrow(request);
+
         // Enforce uniqueness of ExternalId
         var existing = await repo.GetByExternalIdAsync(request.ExternalId, ct);
         if (existing is not null)
